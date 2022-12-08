@@ -47,7 +47,7 @@ module.exports = class DataLaundryController {
     try {
       const user = await User.create({
         username: body.username,
-        password: hash('user123'),
+        password: hash(`${process.env.PASSWORD_DEFAULT_CUSTOMER}`),
         role : 'customer'
       }, { transaction: t });
   
