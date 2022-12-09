@@ -66,10 +66,7 @@ module.exports = class DataLaundryController {
       if(!jenis_laundry){
         throw {status : 404, message : 'Jenis Laundry Tidak Ditemukan'}
       }
-      const checkHargaAsli = jenis_laundry.harga * body.berat
-      if(checkHargaAsli !== body.total){
-        throw {status : 400, message : 'Total Harga Tidak Sesuai'}
-      }
+      const total = jenis_laundry.harga * body.berat
 
       const dataLaundry = await DataLaundry.create({
         user_id : user.id,
@@ -77,7 +74,7 @@ module.exports = class DataLaundryController {
         berat: body.berat,
         tgl_pengantaran : new Date(),
         tgl_pengambilan : body.tgl_pengambilan,
-        total : checkHargaAsli,
+        total,
         status : 'pending',
         keterangan : body.keterangan
       }, { transaction: t });
@@ -109,18 +106,15 @@ module.exports = class DataLaundryController {
         throw {status : 404, message : 'Jenis Laundry Tidak Ditemukan'}
       }
       
-      const checkHargaAsli = jenis_laundry.harga * body.berat
-      if(checkHargaAsli !== body.total){
-        throw {status : 400, message : 'Total Harga Tidak Sesuai'}
-      }
-
+      const total = jenis_laundry.harga * body.berat
+     
       const dataLaundry = await DataLaundry.create({
         user_id : user.id,
         jenis_laundry_id: body.jenis_laundry_id,
         berat: body.berat,
         tgl_pengantaran : new Date(),
         tgl_pengambilan : body.tgl_pengambilan,
-        total : checkHargaAsli,
+        total,
         status : 'pending',
         keterangan : body.keterangan
       });
